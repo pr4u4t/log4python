@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3.10
 
 import time
 import signal
@@ -7,7 +7,7 @@ import os
 from signal import pause
 import argparse
 import sys
-from Queue import Queue
+from queue import Queue
 from threading import Thread
 import datetime
 
