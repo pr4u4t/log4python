@@ -72,7 +72,8 @@ def sensor_motion_setup():
     print("Sensor initialized successfully")
     machine.when_motion = sensor_motion_start
     machine.when_no_motion = sensor_motion_end
-
+    print("Finished setup")
+    
 def sensor_motion_exec():
     #TODO spawn handler
     pause()
