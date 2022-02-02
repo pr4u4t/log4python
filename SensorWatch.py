@@ -1,5 +1,9 @@
+#RBPI dev related imports
 from gpiozero import MotionSensor
 from signal import pause
+#queue and threading related imports
+from Queue import Queue
+from threading import Thread
 import time
 
 machine_one = MotionSensor(18)
