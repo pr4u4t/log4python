@@ -13,6 +13,8 @@ from threading import Thread
 from threading import Lock
 import datetime
 from enum import Enum
+from numpy import array
+import numpy
 
 #Enumeration definition
 class MachineState(Enum):
@@ -47,6 +49,7 @@ Consumer thread function
 def sensor_motion_consumer(output):
     print("consumer thread started")
     now = datetime.datetime.now()
+    data = numpy.zeros(24,dtype = int)
     while consumer_lock.locked():
         try:
             item = sensor_motion_pop()
