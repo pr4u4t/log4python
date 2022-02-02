@@ -8,7 +8,9 @@ from signal import pause
 import argparse
 import sys
 from queue import Queue
+import queue
 from threading import Thread
+from threading import Lock
 import datetime
 from enum import Enum
 
@@ -32,10 +34,29 @@ args = parser.parse_args()
 ### Global declarations
 time_queue = Queue()
 machine = 0
+consumer_lock = Lock()
+consumer_lock.acquire()
 
 if not args.test:
     #RBPI dev related imports only if not in test mode
     from gpiozero import MotionSensor
+
+"""
+Consumer thread function
+"""
+def sensor_motion_consumer(output):
+    print("consumer thread started")
+    now = datetime.datetime.now()
+    while consumer_lock.locked():
+        try:
+            item = sensor_motion_pop()
+        except queue.Empty:
+            print("timedout with empty")
+            
+    print("consumer thread quitting")
+    
+th = Thread(target = sensor_motion_consumer, args = ( args.output, ))
+
 
 """
 Functions that handles RBPI interrupt on PIN this functions 
@@ -53,7 +74,7 @@ def sensor_motion_push(state):
     return ts
 
 def sensor_motion_pop():
-    return time_queue.get()
+    return time_queue.get(True,0.25)
 
 #Interrupt handler when machine changes state to `ON`
 def sensor_motion_start():
@@ -69,7 +90,8 @@ def sensor_motion_end():
 #Catch main thread interrupt to perform graceful exit
 def signal_handler(signum, frame):
     print("Shutdown signal received")
-    #TODO store all pending data
+    consumer_lock.release()
+    th.join()
     print("exiting")
     sys.exit()
 ###
@@ -78,15 +100,6 @@ def signal_handler(signum, frame):
 signal.signal(signal.SIGHUP,signal_handler)
 signal.signal(signal.SIGINT,signal_handler)
 signal.signal(signal.SIGTERM,signal_handler)
-
-"""
-Consumer thread function
-"""
-def sensor_motion_consumer():
-    print("consumer thread started")
-    now = datetime.datetime.now()
-    while True:
-        item = sensor_motion_pop()
 
 """
 Main program functions
@@ -104,14 +117,12 @@ def sensor_motion_setup():
     print("Finished setup")
     
 def sensor_motion_exec():
-    th = Thread(target = sensor_motion_consumer, args = args)
     th.start()
     pause()
     #this should never happen
     #th.join()
 
 #Execute
-
 if not args.test:
     sensor_motion_setup()
     
