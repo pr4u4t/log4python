@@ -9,6 +9,7 @@ import argparse
 import sys
 from Queue import Queue
 from threading import Thread
+import datetime
 
 """
 Parse command line arguments
@@ -32,10 +33,16 @@ Additional function to handle interrupt from signal HUP, TERM, INT
 """
 #Interrupt handler when machine changes state to `ON`
 def sensor_motion_start():
+    ct = datetime.datetime.now()
+    ts = ct.timestamp()
+    print("timestamp:-", ts)
     print("Machine #",args.machname," ON")
 
 #Interrupt handler when machine changes state to `OFF`
 def sensor_motion_end():
+    ct = datetime.datetime.now()
+    ts = ct.timestamp()
+    print("timestamp:-", ts)
     print("Machine #",args.machname," OFF")
 
 #Catch main thread interrupt to perform graceful exit
