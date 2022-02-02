@@ -18,6 +18,8 @@ parser = argparse.ArgumentParser(description='Program that watches changes on Mo
 parser.add_argument('--pin', default = 18)
 parser.add_argument('--machname', default = 1)
 parser.add_argument('--test', action = 'store_true')
+parser.add_argument('-f')
+
 args = parser.parse_args()
 
 if not args.test:
@@ -68,8 +70,8 @@ def sensor_motion_setup():
     print("Initializing sensor...")
     machine.wait_for_no_motion()
     print("Sensor initialized successfully")
-    machine.when_motion = start_motion
-    machine.when_no_motion = end_motion
+    machine.when_motion = sensor_motion_start
+    machine.when_no_motion = sensor_motion_end
 
 def sensor_motion_exec():
     #TODO spawn handler
