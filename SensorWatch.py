@@ -55,8 +55,10 @@ def signal_handler(signum, frame):
     sys.exit()
 ###
 
-### Global Queue declaration
+### Global declarations
 time_queue = Queue()
+machine = MotionSensor(args.pin)
+
 ### Main thread OS signal handle
 signal.signal(signal.SIGHUP,signal_handler)
 signal.signal(signal.SIGINT,signal_handler)
@@ -66,7 +68,6 @@ signal.signal(signal.SIGTERM,signal_handler)
 Main program functions
 """
 def sensor_motion_setup():
-    machine = MotionSensor(args.pin)    
     print("Initializing sensor...")
     machine.wait_for_no_motion()
     print("Sensor initialized successfully")
