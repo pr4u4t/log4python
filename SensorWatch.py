@@ -1,11 +1,14 @@
 #!/usr/bin/env python2.7
 
-from Queue import Queue
-from threading import Thread
 import time
+import signal
+from signal import SIGHUP, SIGINT, SIGTERM
+import os
 from signal import pause
 import argparse
 import sys
+from Queue import Queue
+from threading import Thread
 
 """
 Parse command line arguments
@@ -24,27 +27,51 @@ if not args.test:
 Functions that handles RBPI interrupt on PIN this functions 
 adds data to queue which is processed by another thread to not 
 waste time for processing in main program thread
+
+Additional function to handle interrupt from signal HUP, TERM, INT
 """
 #Interrupt handler when machine changes state to `ON`
 def sensor_motion_start():
-    print("Machine #1 ON")
+    print("Machine #",args.machname," ON")
 
 #Interrupt handler when machine changes state to `OFF`
 def sensor_motion_end():
-    print("Machine #1 OFF")
+    print("Machine #",args.machname," OFF")
+
+#Catch main thread interrupt to perform graceful exit
+def signal_handler(signum, frame):
+    print("Shutdown signal received")
+    #TODO store all pending data
+    print("exiting")
+    sys.exit()
 ###
+
+### Global Queue declaration
+time_queue = Queue()
+### Main thread OS signal handle
+signal.signal(signal.SIGHUP,signal_handler)
+signal.signal(signal.SIGINT,signal_handler)
+signal.signal(signal.SIGTERM,signal_handler)
 
 """
 Main program functions
 """
 def sensor_motion_setup():
-    machine_one = MotionSensor(pin)    
+    machine = MotionSensor(args.pin)    
     print("Initializing sensor...")
-    machine_one.wait_for_no_motion()
+    machine.wait_for_no_motion()
     print("Sensor initialized successfully")
-    machine_one.when_motion = start_motion
-    machine_one.when_no_motion = end_motion
+    machine.when_motion = start_motion
+    machine.when_no_motion = end_motion
 
 def sensor_motion_exec():
     #TODO spawn handler
     pause()
+
+
+#Execute
+
+if not args.test:
+    sensor_motion_setup()
+    
+sensor_motion_exec()
