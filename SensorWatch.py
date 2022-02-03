@@ -15,6 +15,7 @@ import datetime
 from enum import Enum
 from numpy import array
 import numpy
+import os.path
 
 #Enumeration definition
 class MachineState(Enum):
@@ -64,15 +65,22 @@ def sensor_motion_consumer(output):
                 laston = item[1]
             else:
                 laston = 0
+                #
             
         except queue.Empty:
             print("timedout with empty")
             
         if now.day > didx:
+            total = 0
             with open(output,mode="w",encoding="utf-8") as fd:
+                fd.write('Hour, Uptime')
                 for index in range(len(data)):
+                    total += data[index]
                     fd.write('{},{}'.format(index,data[index]))
+                fd.write('Total, {}'.format())
             fd.close()
+            #reset array
+            data = numpy.zeros(24,dtype = int)
             
     print("consumer thread quitting")
     
@@ -144,6 +152,14 @@ def sensor_motion_exec():
     #th.join()
 
 #Execute
+if not os.path.isdir(os.path.dirname(args.output)):
+    print("CSV storage path:",os.path.dirname(args.output),"does not exists or is not a directory")
+    sys.exit()
+
+if not os.access(os.path.dirname(args.output), os.W_OK):
+    print("CSV storage directory:",os.path.dirname(args.output),"is not writeable")
+    sys.exit()
+
 if not args.test:
     sensor_motion_setup()
     
