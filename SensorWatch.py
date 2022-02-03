@@ -30,7 +30,7 @@ parser.add_argument('--pin', default = 18)
 parser.add_argument('--machname', default = 1)
 parser.add_argument('--test', action = 'store_true')
 parser.add_argument('-f')
-parser.add_argument('--output', default = '/var/log/MotionSensor.csv')
+parser.add_argument('--output', default = '/var/log/SensorWatch/MotionSensor.csv')
 args = parser.parse_args()
 
 ### Global declarations
@@ -69,8 +69,9 @@ def sensor_motion_consumer(output):
             print("timedout with empty")
             
         if now.day > didx:
-            fd=open(output,mode="w",encoding="utf-8")
-            #TODO write array
+            with open(output,mode="w",encoding="utf-8") as fd:
+                for index in range(len(data)):
+                    fd.write('{},{}'.format(index,data[index]))
             fd.close()
             
     print("consumer thread quitting")
