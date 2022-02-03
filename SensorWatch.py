@@ -16,6 +16,7 @@ from enum import Enum
 from numpy import array
 import numpy
 import os.path
+import getpass
 
 #Enumeration definition
 class MachineState(Enum):
@@ -154,10 +155,13 @@ def sensor_motion_exec():
 #Execute
 if not os.path.isdir(os.path.dirname(args.output)):
     print("CSV storage path:",os.path.dirname(args.output),"does not exists or is not a directory")
+    print("Please create it using `sudo mkdir",os.path.dirname(args.output),"`")
     sys.exit()
 
 if not os.access(os.path.dirname(args.output), os.W_OK):
     print("CSV storage directory:",os.path.dirname(args.output),"is not writeable")
+    print("Please change ownership of this directory using: `sudo chown {}:{} {}`".format(getpass.getuser(),getpass.getuser(),os.path.dirname(args.output)))
+    print("also change permission of this directory `sudo chmod 750 {}`".format(os.path.dirname(args.output)))
     sys.exit()
 
 if not args.test:
