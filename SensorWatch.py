@@ -48,13 +48,30 @@ Consumer thread function
 """
 def sensor_motion_consumer(output):
     print("consumer thread started")
-    now = datetime.datetime.now()
     data = numpy.zeros(24,dtype = int)
+    now = datetime.datetime.now()
+        
+    laston = 0
+    hidx = 0
+    didx = now.day
+    
     while consumer_lock.locked():
+        now = datetime.datetime.now()
+        print(now.hour)
         try:
             item = sensor_motion_pop()
+            if item[0] == MachineState.ON:
+                laston = item[1]
+            else:
+                laston = 0
+            
         except queue.Empty:
             print("timedout with empty")
+            
+        if now.day > didx:
+            fd=open(output,mode="w",encoding="utf-8")
+            #TODO write array
+            fd.close()
             
     print("consumer thread quitting")
     
