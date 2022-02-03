@@ -61,12 +61,12 @@ def sensor_motion_tofile(output,machname,data):
 def sensor_motion_tostdout(machname,data):
     print("Writing uptime statistics to stdout")
     total = 0
-    fd.write("Machine name, {}\r\n".format(machname))
-        fd.write("Hour, Uptime\r\n")
-        for index in range(len(data)):
-            total += data[index]
-            print("{}, {}\r\n".format(index,data[index]))
-        print("Total, {}\r\n".format(total))
+    print("Machine name, {}\r\n".format(machname))
+    print("Hour, Uptime\r\n")
+    for index in range(len(data)):
+        total += data[index]
+        print("{}, {}\r\n".format(index,data[index]))
+    print("Total, {}\r\n".format(total))
 
 """
 Consumer thread function
@@ -101,6 +101,8 @@ def sensor_motion_consumer(output, resolution, machname):
             print("Hour changed")
             #switch index to next hour
             hidx = now.hour
+            if laston != 0:
+                laston = now.timestamp()
         
         if now.day != didx:
             print("Day changed")
