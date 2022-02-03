@@ -88,7 +88,7 @@ def sensor_motion_consumer(output, resolution, machname):
                 laston = item[1]
             else:
                 print("machine state changed to OFF")
-                data[hidx] += (now.timestamp() - laston)
+                data[hidx] += ((now.timestamp() - laston)/60)
                 laston = 0
                 
         except queue.Empty:
@@ -98,7 +98,7 @@ def sensor_motion_consumer(output, resolution, machname):
         if now.hour != hidx:
             print("Hour changed")
             if laston != 0:
-                data[hidx] += (now.timestamp() - laston)
+                data[hidx] += ((now.timestamp() - laston)/60)
                 laston = now.timestamp()
             #switch index to next hour
             hidx = now.hour
