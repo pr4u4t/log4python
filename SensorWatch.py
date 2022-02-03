@@ -28,11 +28,12 @@ class MachineState(Enum):
 Parse command line arguments
 """
 parser = argparse.ArgumentParser(description='Program that watches changes on Motion Sensor on a given RBPI PIN')
-parser.add_argument('--pin', default = 18)
-parser.add_argument('--machname', default = 1)
+parser.add_argument('--pin', default = 18, help = "number of PIN to which sensor is connected")
+parser.add_argument('--machname', default = 1, help = "identifier of machine used in csv file title")
 parser.add_argument('--test', action = 'store_true')
 parser.add_argument('-f')
 parser.add_argument('--output', default = '/var/log/SensorWatch/MotionSensor.csv')
+parser.add_argument('--resolution', default = 0.25, help = "consumer thread timer resolution")
 args = parser.parse_args()
 
 ### Global declarations
@@ -45,48 +46,74 @@ if not args.test:
     #RBPI dev related imports only if not in test mode
     from gpiozero import MotionSensor
 
+def sensor_motion_tofile(output,machname,data):
+    print("Writing uptime statistics to file {}".format(output))
+    total = 0
+    with open(output,mode="w",encoding="utf-8") as fd:
+        fd.write("Machine name, {}\r\n".format(machname))
+        fd.write("Hour, Uptime\r\n")
+        for index in range(len(data)):
+            total += data[index]
+            fd.write("{}, {}\r\n".format(index,data[index]))
+        fd.write("Total, {}\r\n".format(total))
+        fd.close()
+
+def sensor_motion_tostdout(machname,data):
+    print("Writing uptime statistics to stdout")
+    total = 0
+    fd.write("Machine name, {}\r\n".format(machname))
+        fd.write("Hour, Uptime\r\n")
+        for index in range(len(data)):
+            total += data[index]
+            print("{}, {}\r\n".format(index,data[index]))
+        print("Total, {}\r\n".format(total))
+
 """
 Consumer thread function
 """
-def sensor_motion_consumer(output):
+def sensor_motion_consumer(output, resolution, machname):
     print("consumer thread started")
     data = numpy.zeros(24,dtype = int)
     now = datetime.datetime.now()
         
     laston = 0
-    hidx = 0
+    hidx = now.hour
     didx = now.day
     
     while consumer_lock.locked():
         now = datetime.datetime.now()
-        print(now.hour)
+        
         try:
             item = sensor_motion_pop()
             if item[0] == MachineState.ON:
+                print("machine state changed to ON")
                 laston = item[1]
             else:
+                print("machine state changed to OFF")
                 laston = 0
                 #
             
         except queue.Empty:
-            print("timedout with empty")
-            
-        if now.day > didx:
-            total = 0
-            with open(output,mode="w",encoding="utf-8") as fd:
-                fd.write('Hour, Uptime')
-                for index in range(len(data)):
-                    total += data[index]
-                    fd.write('{},{}'.format(index,data[index]))
-                fd.write('Total, {}'.format())
-            fd.close()
-            #reset array
+            #pretend nothing happend
+            pass
+        
+        if now.hour != hidx:
+            print("Hour changed")
+            #switch index to next hour
+            hidx = now.hour
+        
+        if now.day != didx:
+            print("Day changed")
+            sensor_motion_tofile(output,machname,data)
+            #reset data and start all over again
             data = numpy.zeros(24,dtype = int)
+            #switch index to next day and 0 hour
+            didx = now.day
+            hidx = now.hour #this probably be 0 
             
     print("consumer thread quitting")
     
-th = Thread(target = sensor_motion_consumer, args = ( args.output, ))
-
+th = Thread(target = sensor_motion_consumer, args = ( args.output, args.resolution, args.machname))
 
 """
 Functions that handles RBPI interrupt on PIN this functions 
@@ -161,7 +188,7 @@ if not os.path.isdir(os.path.dirname(args.output)):
 if not os.access(os.path.dirname(args.output), os.W_OK):
     print("CSV storage directory:",os.path.dirname(args.output),"is not writeable")
     print("Please change ownership of this directory using: `sudo chown {}:{} {}`".format(getpass.getuser(),getpass.getuser(),os.path.dirname(args.output)))
-    print("also change permission of this directory `sudo chmod 750 {}`".format(os.path.dirname(args.output)))
+    print("also change permission of this directory using: `sudo chmod 750 {}`".format(os.path.dirname(args.output)))
     sys.exit()
 
 if not args.test:
