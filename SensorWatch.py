@@ -23,7 +23,6 @@ class MachineState(Enum):
     OFF     = 0
     ON      = 1
 
-
 """
 Parse command line arguments
 """
@@ -82,7 +81,6 @@ def sensor_motion_consumer(output, resolution, machname):
     
     while consumer_lock.locked():
         now = datetime.datetime.now()
-        
         try:
             item = sensor_motion_pop()
             if item[0] == MachineState.ON:
@@ -90,20 +88,21 @@ def sensor_motion_consumer(output, resolution, machname):
                 laston = item[1]
             else:
                 print("machine state changed to OFF")
+                data[hidx] += (now.timestamp() - laston)
                 laston = 0
-                #
-            
+                
         except queue.Empty:
             #pretend nothing happend
             pass
         
         if now.hour != hidx:
             print("Hour changed")
+            if laston != 0:
+                data[hidx] += (now.timestamp() - laston)
+                laston = now.timestamp()
             #switch index to next hour
             hidx = now.hour
-            if laston != 0:
-                laston = now.timestamp()
-        
+            
         if now.day != didx:
             print("Day changed")
             sensor_motion_tofile(output,machname,data)
