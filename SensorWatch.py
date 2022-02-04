@@ -54,8 +54,8 @@ def sensor_motion_tofile(output,machname,data):
         fd.write("Hour, Uptime\r\n")
         for index in range(len(data)):
             total += data[index]
-            fd.write("{}, {}\r\n".format(index,data[index]))
-        fd.write("Total, {}\r\n".format(total))
+            fd.write("{}, {:.2f}\r\n".format(index,data[index]))
+        fd.write("Total, {:.2f}\r\n".format(total))
         fd.close()
 
 def sensor_motion_tostdout(machname,data):
@@ -65,8 +65,8 @@ def sensor_motion_tostdout(machname,data):
     print("Hour, Uptime")
     for index in range(len(data)):
         total += data[index]
-        print("{}, {}".format(index,data[index]))
-    print("Total, {}".format(total))
+        print("{}, {:.2f}".format(index,data[index]))
+    print("Total, {:.2f}".format(total))
 
 """
 Consumer thread function
