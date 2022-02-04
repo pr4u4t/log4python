@@ -37,7 +37,7 @@ args = parser.parse_args()
 
 ### Global declarations
 time_queue = Queue()
-machine = 0
+machine = MotionSensor(args.pin)
 consumer_lock = Lock()
 consumer_lock.acquire()
 
@@ -82,13 +82,14 @@ def sensor_motion_consumer(output, resolution, machname):
     while consumer_lock.locked():
         now = datetime.datetime.now()
         try:
-            item = sensor_motion_pop()
+            item = sensor_motion_pop(resolution)
             if item[0] == MachineState.ON:
                 print("machine state changed to ON")
                 laston = item[1]
             else:
                 print("machine state changed to OFF")
-                data[hidx] += ((now.timestamp() - laston)/60)
+                if laston != 0:
+                    data[hidx] += ((now.timestamp() - laston)/60)
                 laston = 0
                 
         except queue.Empty:
@@ -132,8 +133,8 @@ def sensor_motion_push(state):
     time_queue.put([state,ts])
     return ts
 
-def sensor_motion_pop():
-    return time_queue.get(True,0.25)
+def sensor_motion_pop(resolution = 0.25):
+    return time_queue.get(True,resolution)
 
 #Interrupt handler when machine changes state to `ON`
 def sensor_motion_start():
@@ -164,7 +165,6 @@ signal.signal(signal.SIGTERM,signal_handler)
 Main program functions
 """
 def sensor_motion_setup():
-    machine = MotionSensor(args.pin)
     print("Initializing sensor...")
     machine.wait_for_no_motion()
     #we have been patiently waiting until machine state is OFF
