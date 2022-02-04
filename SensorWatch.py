@@ -122,7 +122,7 @@ class PiMotionSensor:
             self.sensor = MotionSensor(args.pin)
             self.setup()
         
-        self.th = Thread(target = self.consumer, args = ( args.output, args.resolution, args.machname))
+        self.th = Thread(target = self.consumer, args = ( os.path.join(self.args.output, "machine_{}/data.csv".format(self.args.machname)), args.resolution, args.machname))
 
     def stop(self):
         self.consumer_lock.release()
