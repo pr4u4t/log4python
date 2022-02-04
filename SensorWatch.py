@@ -73,7 +73,7 @@ Consumer thread function
 """
 def sensor_motion_consumer(output, resolution, machname):
     print("consumer thread started")
-    data = numpy.zeros(24,dtype)
+    data = numpy.zeros(24)
     now = datetime.datetime.now()
         
     laston = 0
