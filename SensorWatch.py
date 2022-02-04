@@ -53,6 +53,7 @@ class Application:
         self.signal_setup()
         self.sensor = PiMotionSensor(self.args)
 
+        self.sensor.start()
     """
     Parse command line arguments
     """
@@ -119,12 +120,17 @@ class PiMotionSensor:
             #RBPI dev related imports only if not in test mode
             from gpiozero import MotionSensor
             self.sensor = MotionSensor(args.pin)
-            self.th = Thread(target = self.consumer, args = ( args.output, args.resolution, args.machname))
+            self.setup()
+        
+        self.th = Thread(target = self.consumer, args = ( args.output, args.resolution, args.machname))
 
     def stop(self):
         self.consumer_lock.release()
         if not self.args.test:
             self.th.join()
+
+    def start(self):
+        self.th.start()
 
     def to_file(self,output,machname,data):
         print("Writing uptime statistics to file {}".format(output))
@@ -159,7 +165,7 @@ class PiMotionSensor:
         hidx = now.hour
         didx = now.day
         
-        while consumer_lock.locked():
+        while self.consumer_lock.locked():
             now = datetime.datetime.now()
             try:
                 item = self.motion_pop(resolution)
@@ -196,7 +202,7 @@ class PiMotionSensor:
                 hidx = now.hour #this probably be 0 
                 
         print("consumer thread quitting")
-        self.to_stdout(machname,data)
+        self.to_stdout(machname,self.data)
     
     """
     Functions that handles RBPI interrupt on PIN this functions 
@@ -207,48 +213,39 @@ class PiMotionSensor:
     """
 
     #push current MachineState into the queue
-    def motion_push(state):
+    def motion_push(self,state):
         ct = datetime.datetime.now()
         ts = ct.timestamp()
         self.time_queue.put([state,ts])
         return ts
 
-    def motion_pop(resolution = 0.25):
-        return time_queue.get(True,resolution)
+    def motion_pop(self,resolution = 0.25):
+        return self.time_queue.get(True,resolution)
 
     #Interrupt handler when machine changes state to `ON`
-    def sensor_motion_start():
-        ts = sensor_motion_push(MachineState.ON)
+    def sensor_motion_start(self):
+        ts = self.motion_push(MachineState.ON)
         print("Machine #",args.machname," ON",ts)
 
     #Interrupt handler when machine changes state to `OFF`
-    def sensor_motion_end():
-        ts = sensor_motion_push(MachineState.OFF)
+    def sensor_motion_end(self):
+        ts = self.motion_push(MachineState.OFF)
         print("Machine #",args.machname," OFF",ts)
     
     """
     Main program functions
     """
-    def setup():
+    def setup(self):
         print("Initializing sensor...")
-        machine.wait_for_no_motion()
+        self.sensor.wait_for_no_motion()
         #we have been patiently waiting until machine state is OFF
         #record that state and timestamp
-        sensor_motion_push(MachineState.OFF)
+        self.sensor.motion_push(MachineState.OFF)
         print("Sensor initialized successfully")
-        machine.when_motion = sensor_motion_start
-        machine.when_no_motion = sensor_motion_end
+        self.sensor.when_motion = self.motion_start
+        self.sensor.when_no_motion = self.motion_end
         print("Finished setup")
     
+######################## MAIN ####################################
 
-
-#args = parse_arguments()
-#
-#Execute
-#if not args.test:
-#    sensor_motion_setup()
-#    
-#sensor_motion_exec()
-
-app = Application()
-app.run()
+Application().run()
