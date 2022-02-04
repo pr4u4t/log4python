@@ -29,9 +29,9 @@ Parse command line arguments
 parser = argparse.ArgumentParser(description='Program that watches changes on Motion Sensor on a given RBPI PIN')
 parser.add_argument('--pin', default = 18, help = "number of PIN to which sensor is connected")
 parser.add_argument('--machname', default = 1, help = "identifier of machine used in csv file title")
-parser.add_argument('--test', action = 'store_true')
-parser.add_argument('-f')
-parser.add_argument('--output', default = '/var/log/SensorWatch/MotionSensor.csv')
+parser.add_argument('--test', action = 'store_true', help = "run the program in test mode")
+parser.add_argument('-f', help = "bulk option for jupyter")
+parser.add_argument('--output', default = '/var/log/SensorWatch', help = "program storage directory")
 parser.add_argument('--resolution', default = 0.25, help = "consumer thread timer resolution")
 args = parser.parse_args()
 
@@ -185,9 +185,9 @@ def sensor_motion_exec():
     #th.join()
 
 #Execute
-if not os.path.isdir(os.path.dirname(args.output)):
-    print("CSV storage path:",os.path.dirname(args.output),"does not exists or is not a directory")
-    print("Please create it using `sudo mkdir",os.path.dirname(args.output),"`")
+if not os.path.isdir(args.output):
+    print("CSV storage path:",args.output,"does not exists or is not a directory")
+    print("Please create it using `sudo mkdir",args.output,"`")
     sys.exit()
 
 if not os.access(os.path.dirname(args.output), os.W_OK):
