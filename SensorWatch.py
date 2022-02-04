@@ -35,15 +35,16 @@ parser.add_argument('--output', default = '/var/log/SensorWatch/MotionSensor.csv
 parser.add_argument('--resolution', default = 0.25, help = "consumer thread timer resolution")
 args = parser.parse_args()
 
+if not args.test:
+    #RBPI dev related imports only if not in test mode
+    from gpiozero import MotionSensor
+
 ### Global declarations
 time_queue = Queue()
 machine = MotionSensor(args.pin)
 consumer_lock = Lock()
 consumer_lock.acquire()
 
-if not args.test:
-    #RBPI dev related imports only if not in test mode
-    from gpiozero import MotionSensor
 
 def sensor_motion_tofile(output,machname,data):
     print("Writing uptime statistics to file {}".format(output))
