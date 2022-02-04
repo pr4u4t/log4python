@@ -84,6 +84,7 @@ def sensor_motion_consumer(output, resolution, machname):
         now = datetime.datetime.now()
         try:
             item = sensor_motion_pop(resolution)
+            print("POPED: {}".format(item))
             if item[0] == MachineState.ON:
                 print("machine state changed to ON")
                 laston = item[1]
