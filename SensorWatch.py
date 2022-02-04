@@ -17,11 +17,33 @@ from numpy import array
 import numpy
 import os.path
 import getpass
+import socket
+import threading
+import socketserver
 
 #Enumeration definition
 class MachineState(Enum):
     OFF     = 0
     ON      = 1
+
+"""
+Lock and inter process communication 
+"""
+class ThreadedStreamRequestHandler(socketserver.BaseRequestHandler):
+    def setup(self):
+        pass
+    
+    def handle(self):
+        data = str(self.request.recv(1024), 'ascii')
+        cur_thread = threading.current_thread()
+        response = bytes("{}: {}".format(cur_thread.name, data), 'ascii')
+        self.request.sendall(response)
+        
+    def finish():
+        pass
+
+class ThreadedStreamServer(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
+    pass
 
 """
 Parse command line arguments
@@ -39,9 +61,25 @@ if not args.test:
     #RBPI dev related imports only if not in test mode
     from gpiozero import MotionSensor
 
+#check and create if necessary instance directory
+if not os.path.isdir(args.output):
+    print("CSV storage path:",args.output,"does not exists or is not a directory")
+    print("Please create it using `sudo mkdir",args.output,"`")
+    sys.exit()
+
+if not os.access(args.output, os.W_OK):
+    print("CSV storage directory:",args.output,"is not writeable")
+    print("Please change ownership of this directory using: `sudo chown {}:{} {}`".format(getpass.getuser(),getpass.getuser(),args.output))
+    print("also change permission of this directory using: `sudo chmod 750 {}`".format(args.output))
+    sys.exit()
+    
+if not os.path.isdir(os.path.join(args.output, "machine_{}".format(args.machname))):
+    os.mkdir(os.path.join(args.output, "machine_{}".format(args.machname)))
+
+
 ### Global declarations
 time_queue = Queue()
-machine = MotionSensor(args.pin)
+machine = MotionSensor(args.pin) if not args.test else 0
 consumer_lock = Lock()
 consumer_lock.acquire()
 
@@ -185,17 +223,6 @@ def sensor_motion_exec():
     #th.join()
 
 #Execute
-if not os.path.isdir(args.output):
-    print("CSV storage path:",args.output,"does not exists or is not a directory")
-    print("Please create it using `sudo mkdir",args.output,"`")
-    sys.exit()
-
-if not os.access(os.path.dirname(args.output), os.W_OK):
-    print("CSV storage directory:",os.path.dirname(args.output),"is not writeable")
-    print("Please change ownership of this directory using: `sudo chown {}:{} {}`".format(getpass.getuser(),getpass.getuser(),os.path.dirname(args.output)))
-    print("also change permission of this directory using: `sudo chmod 750 {}`".format(os.path.dirname(args.output)))
-    sys.exit()
-
 if not args.test:
     sensor_motion_setup()
     
