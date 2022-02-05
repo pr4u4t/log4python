@@ -240,7 +240,7 @@ class PiMotionSensor:
         self.sensor.wait_for_no_motion()
         #we have been patiently waiting until machine state is OFF
         #record that state and timestamp
-        self.sensor.motion_push(MachineState.OFF)
+        self.motion_push(MachineState.OFF)
         print("Sensor initialized successfully")
         self.sensor.when_motion = self.motion_start
         self.sensor.when_no_motion = self.motion_end
