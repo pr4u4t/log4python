@@ -225,12 +225,12 @@ class PiMotionSensor:
     #Interrupt handler when machine changes state to `ON`
     def motion_start(self):
         ts = self.motion_push(MachineState.ON)
-        print("Machine #",args.machname," ON",ts)
+        print("Machine #",self.args.machname," ON",ts)
 
     #Interrupt handler when machine changes state to `OFF`
     def motion_end(self):
         ts = self.motion_push(MachineState.OFF)
-        print("Machine #",args.machname," OFF",ts)
+        print("Machine #",self.args.machname," OFF",ts)
     
     """
     Main program functions
