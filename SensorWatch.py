@@ -223,12 +223,12 @@ class PiMotionSensor:
         return self.time_queue.get(True,resolution)
 
     #Interrupt handler when machine changes state to `ON`
-    def sensor_motion_start(self):
+    def motion_start(self):
         ts = self.motion_push(MachineState.ON)
         print("Machine #",args.machname," ON",ts)
 
     #Interrupt handler when machine changes state to `OFF`
-    def sensor_motion_end(self):
+    def motion_end(self):
         ts = self.motion_push(MachineState.OFF)
         print("Machine #",args.machname," OFF",ts)
     
