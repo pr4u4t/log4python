@@ -20,6 +20,7 @@ import getpass
 import socket
 import threading
 import socketserver
+import configparser
 
 #Enumeration definition
 class MachineState(Enum):
@@ -48,17 +49,25 @@ class ThreadedStreamServer(socketserver.ThreadingMixIn, socketserver.UnixStreamS
 
 class Application:
     def __init__(self):
+        print("New Application instance")
         self.args = self.parse_arguments()
         self.check_env()
         self.signal_setup()
         self.sensor = PiMotionSensor(self.args)
-
         self.sensor.start()
+        
+    def create_sensor(self):
+        pass
+    
+    def read_configuration(self):
+        pass
+    
     """
     Parse command line arguments
     """
     def parse_arguments(self):
         print("Parsing command line arguments")
+        
         parser = argparse.ArgumentParser(description='Program that watches changes on Motion Sensor on a given RBPI PIN')
         parser.add_argument('--pin', default = 18, help = "number of PIN to which sensor is connected")
         parser.add_argument('--machname', default = 1, help = "identifier of machine used in csv file title")
@@ -66,6 +75,8 @@ class Application:
         parser.add_argument('-f', help = "bulk option for jupyter")
         parser.add_argument('--output', default = '/var/log/SensorWatch', help = "program storage directory")
         parser.add_argument('--resolution', default = 0.25, help = "consumer thread timer resolution")
+        parser.add_argument('--sensor', default = 'MotionSensor', help = "")
+        
         return parser.parse_args()
 
     def check_env(self):
@@ -107,6 +118,9 @@ class Application:
         #this should never happen
         #th.join()
 
+class PiSensor:
+    def __init__(self):
+        pass
 
 class PiMotionSensor:
     def __init__(self,args):
@@ -132,26 +146,26 @@ class PiMotionSensor:
     def start(self):
         self.th.start()
 
-    def to_file(self,output,machname,data):
+    def to_file(self):
         print("Writing uptime statistics to file {}".format(output))
         total = 0
-        with open(output,mode="w",encoding="utf-8") as fd:
-            fd.write("Machine name, {}\r\n".format(machname))
+        with open(self.args.output,mode="w",encoding="utf-8") as fd:
+            fd.write("Machine name, {}\r\n".format(self.machname))
             fd.write("Hour, Uptime\r\n")
-            for index in range(len(data)):
-                total += data[index]
-                fd.write("{}, {:.2f}\r\n".format(index,data[index]))
+            for index in range(len(self.data)):
+                total += self.data[index]
+                fd.write("{}, {:.2f}\r\n".format(index,self.data[index]))
             fd.write("Total, {:.2f}\r\n".format(total))
         fd.close()
 
-    def to_stdout(self,machname,data):
+    def to_stdout(self):
         print("Writing uptime statistics to stdout")
         total = 0
-        print("Machine name, {}".format(machname))
+        print("Machine name, {}".format(self.args.machname))
         print("Hour, Uptime")
-        for index in range(len(data)):
-            total += data[index]
-            print("{}, {:.2f}".format(index,data[index]))
+        for index in range(len(self.data)):
+            total += self.data[index]
+            print("{}, {:.2f}".format(index,self.data[index]))
         print("Total, {:.2f}".format(total))
 
     """
@@ -194,7 +208,7 @@ class PiMotionSensor:
                 
             if now.day != didx:
                 print("Day changed")
-                self.to_file(output,machname,data)
+                self.to_file()
                 #reset data and start all over again
                 self.data = numpy.zeros(24,dtype = int)
                 #switch index to next day and 0 hour
@@ -202,7 +216,7 @@ class PiMotionSensor:
                 hidx = now.hour #this probably be 0 
                 
         print("consumer thread quitting")
-        self.to_stdout(machname,self.data)
+        self.to_stdout()
     
     """
     Functions that handles RBPI interrupt on PIN this functions 
