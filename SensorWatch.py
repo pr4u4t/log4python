@@ -118,34 +118,13 @@ class Application:
         #this should never happen
         #th.join()
 
-class PiSensor:
-    def __init__(self):
+class SaveHandler:
+    def save(self,args):
         pass
 
-class PiMotionSensor:
+class FileSaveHandler:
     def __init__(self,args):
-        self.time_queue = Queue()
-        self.consumer_lock = Lock()
-        self.consumer_lock.acquire()
-        self.args = args
-        self.data = numpy.zeros(24)
-        
-        if not args.test:
-            #RBPI dev related imports only if not in test mode
-            from gpiozero import MotionSensor
-            self.sensor = MotionSensor(args.pin)
-            self.setup()
-        
-        self.th = Thread(target = self.consumer, args = ( os.path.join(self.args.output, "machine_{}/data.csv".format(self.args.machname)), args.resolution, args.machname))
-
-    def stop(self):
-        self.consumer_lock.release()
-        if not self.args.test:
-            self.th.join()
-
-    def start(self):
-        self.th.start()
-
+    
     def to_file(self):
         print("Writing uptime statistics to file {}".format(output))
         total = 0
@@ -157,6 +136,35 @@ class PiMotionSensor:
                 fd.write("{}, {:.2f}\r\n".format(index,self.data[index]))
             fd.write("Total, {:.2f}\r\n".format(total))
         fd.close()
+
+class PiSensor:
+    def __init__(self,args):
+        self.time_queue = Queue()
+        self.consumer_lock = Lock()
+        self.consumer_lock.acquire()
+        self.args = args
+
+    def stop(self):
+        self.consumer_lock.release()
+        if not self.args.test:
+            self.th.join()
+
+    def start(self):
+        self.th.start()
+        
+class PiMotionSensor:
+    def __init__(self,args):
+        self.data = numpy.zeros(24)
+        
+        if not args.test:
+            #RBPI dev related imports only if not in test mode
+            from gpiozero import MotionSensor
+            self.sensor = MotionSensor(args.pin)
+            self.setup()
+        
+        self.th = Thread(target = self.consumer, args = ( os.path.join(self.args.output, "machine_{}/data.csv".format(self.args.machname)), args.resolution, args.machname))
+
+    
 
     def to_stdout(self):
         print("Writing uptime statistics to stdout")
