@@ -126,10 +126,10 @@ class FileSaveHandler:
     def __init__(self,args):
     
     def to_file(self):
-        print("Writing uptime statistics to file {}".format(output))
+        print("Writing uptime statistics to file {}".format(self.args.output))
         total = 0
         with open(self.args.output,mode="w",encoding="utf-8") as fd:
-            fd.write("Machine name, {}\r\n".format(self.machname))
+            fd.write("Machine name, {}\r\n".format(self.args.machname))
             fd.write("Hour, Uptime\r\n")
             for index in range(len(self.data)):
                 total += self.data[index]
