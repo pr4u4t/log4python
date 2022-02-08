@@ -124,8 +124,9 @@ class SaveHandler:
 
 class FileSaveHandler:
     def __init__(self,args):
+        self.args = args
     
-    def to_file(self):
+    def save(self,data):
         print("Writing uptime statistics to file {}".format(self.args.output))
         total = 0
         with open(self.args.output,mode="w",encoding="utf-8") as fd:
@@ -133,9 +134,23 @@ class FileSaveHandler:
             fd.write("Hour, Uptime\r\n")
             for index in range(len(self.data)):
                 total += self.data[index]
-                fd.write("{}, {:.2f}\r\n".format(index,self.data[index]))
+                fd.write("{}, {:.2f}\r\n".format(index,data[index]))
             fd.write("Total, {:.2f}\r\n".format(total))
         fd.close()
+
+class ConsoleHandler:
+    def __init(self,args):
+            self.args = args
+    
+    def save(self,data):
+        print("Writing uptime statistics to stdout")
+        total = 0
+        print("Machine name, {}".format(self.args.machname))
+        print("Hour, Uptime")
+        for index in range(len(self.data)):
+            total += self.data[index]
+            print("{}, {:.2f}".format(index,data[index]))
+        print("Total, {:.2f}".format(total))
 
 class PiSensor:
     def __init__(self,args):
@@ -143,6 +158,7 @@ class PiSensor:
         self.consumer_lock = Lock()
         self.consumer_lock.acquire()
         self.args = args
+        self.th = Thread(target = self.consumer, args = ( os.path.join(self.args.output, "machine_{}/data.csv".format(self.args.machname)), args.resolution, args.machname))
 
     def stop(self):
         self.consumer_lock.release()
@@ -152,40 +168,35 @@ class PiSensor:
     def start(self):
         self.th.start()
         
-class PiMotionSensor:
-    def __init__(self,args):
-        self.data = numpy.zeros(24)
-        
-        if not args.test:
-            #RBPI dev related imports only if not in test mode
-            from gpiozero import MotionSensor
-            self.sensor = MotionSensor(args.pin)
-            self.setup()
-        
-        self.th = Thread(target = self.consumer, args = ( os.path.join(self.args.output, "machine_{}/data.csv".format(self.args.machname)), args.resolution, args.machname))
+    #push current MachineState into the queue
+    def event_push(self,state):
+        ct = datetime.datetime.now()
+        ts = ct.timestamp()
+        self.time_queue.put([state,ts])
+        return ts
 
+    def event_pop(self,resolution = 0.25):
+        return self.time_queue.get(True,resolution)
+        
+    def setup_changed(self):
+        pass
     
-
-    def to_stdout(self):
-        print("Writing uptime statistics to stdout")
-        total = 0
-        print("Machine name, {}".format(self.args.machname))
-        print("Hour, Uptime")
-        for index in range(len(self.data)):
-            total += self.data[index]
-            print("{}, {:.2f}".format(index,self.data[index]))
-        print("Total, {:.2f}".format(total))
-
+    def minute_changed(self):
+        pass
+    
+    def hour_changed(self):
+        pass
+    
+    def day_changed(self):
+        pass
+    
     """
     Consumer thread function
     """
     def consumer(self,output, resolution, machname):
         print("consumer thread started")
         
-        now = datetime.datetime.now()
-        laston = 0
-        hidx = now.hour
-        didx = now.day
+        self.setup_changed()
         
         while self.consumer_lock.locked():
             now = datetime.datetime.now()
@@ -206,26 +217,58 @@ class PiMotionSensor:
                 #pretend nothing happend
                 pass
             
+            if now.minute != midx:
+                print("Minute changed")
+                self.minute_changed()
+            
             if now.hour != hidx:
                 print("Hour changed")
-                if laston != 0:
-                    self.data[hidx] += ((now.timestamp() - laston)/60)
-                    laston = now.timestamp()
-                #switch index to next hour
-                hidx = now.hour
+                self.hour_changed()
                 
             if now.day != didx:
                 print("Day changed")
-                self.to_file()
-                #reset data and start all over again
-                self.data = numpy.zeros(24,dtype = int)
-                #switch index to next day and 0 hour
-                didx = now.day
-                hidx = now.hour #this probably be 0 
+                self.day_changed()
                 
         print("consumer thread quitting")
         self.to_stdout()
+        
+class PiMotionSensor:
+    def __init__(self,args):
+        self.data = numpy.zeros(24)
+        
+        if not args.test:
+            #RBPI dev related imports only if not in test mode
+            from gpiozero import MotionSensor
+            self.sensor = MotionSensor(args.pin)
+            self.setup()
+       
+    def setup_changed(self):
+        self.priv = [ 
+            laston  = 0,
+            now     = datetime.datetime.now(),
+            midx    = now.minute,
+            hidx    = now.hour,
+            didx    = now.day
+        ]
     
+    def minute_changed(self):
+        pass
+    
+    def hour_changed(self):
+        if laston != 0:
+            self.data[hidx] += ((now.timestamp() - laston)/60)
+            self.priv.laston = now.timestamp()
+        #switch index to next hour
+        self.priv.hidx = now.hour
+        
+    
+    def day_changed(self):
+        self.to_file()
+        #reset data and start all over again
+        self.data = numpy.zeros(24,dtype = int)
+        #switch index to next day and 0 hour
+        didx = now.day
+        hidx = now.hour #this probably be 0     
     """
     Functions that handles RBPI interrupt on PIN this functions 
     adds data to queue which is processed by another thread to not 
@@ -234,16 +277,7 @@ class PiMotionSensor:
     Additional function to handle interrupt from signal HUP, TERM, INT
     """
 
-    #push current MachineState into the queue
-    def motion_push(self,state):
-        ct = datetime.datetime.now()
-        ts = ct.timestamp()
-        self.time_queue.put([state,ts])
-        return ts
-
-    def motion_pop(self,resolution = 0.25):
-        return self.time_queue.get(True,resolution)
-
+    
     #Interrupt handler when machine changes state to `ON`
     def motion_start(self):
         ts = self.motion_push(MachineState.ON)
