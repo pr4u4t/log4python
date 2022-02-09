@@ -30,14 +30,14 @@ class PiMotionSensor(PiSensor.PiSensor):
         }
     
     def minute_changed(self,now):
-        pass
+        self.priv['midx'] = now.minute
     
     def hour_changed(self,now):
         if laston != 0:
             self.data[hidx] += ((now.timestamp() - laston)/60)
-            self.priv.laston = now.timestamp()
+            self.priv['laston'] = now.timestamp()
         #switch index to next hour
-        self.priv.hidx = now.hour
+        self.priv['hidx'] = now.hour
         
     
     def day_changed(self,now):
@@ -45,8 +45,8 @@ class PiMotionSensor(PiSensor.PiSensor):
         #reset data and start all over again
         self.data = numpy.zeros(24,dtype = int)
         #switch index to next day and 0 hour
-        self.priv.didx = now.day
-        self.priv.hidx = now.hour #this probably be 0  
+        self.priv['didx'] = now.day
+        self.priv['hidx'] = now.hour #this probably be 0  
         
     """
     Functions that handles RBPI interrupt on PIN this functions 

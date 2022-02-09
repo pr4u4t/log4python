@@ -7,8 +7,6 @@ import os
 from signal import pause
 import argparse
 import sys
-
-
 import os.path
 import getpass
 import configparser
@@ -90,11 +88,6 @@ class Application:
         #this should never happen
         #th.join()
 
-
-
-
-        
-    
 ######################## MAIN ####################################
 
 Application().run()
