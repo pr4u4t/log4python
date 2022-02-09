@@ -105,3 +105,11 @@ class PiSensor:
                 
         print("consumer thread quitting")
         self.to_stdout(self.data)
+
+
+if __name__ == "__main__":
+    print("Basic class test")
+    from ArgumentParser import parse_arguments 
+    args = parse_arguments()
+    sensor = PiSensor(args)
+    sensor.start()
