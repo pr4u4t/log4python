@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from time import sleep
 from queue import Queue
 import queue
 from threading import Thread
@@ -14,15 +15,18 @@ class PiSensor:
         self.consumer_lock = Lock()
         self.consumer_lock.acquire()
         self.args = args
-        self.th = Thread(target = self.consumer, args = ( os.path.join(self.args.output, "machine_{}/data.csv".format(self.args.name)), args.resolution, args.name))
+        self.consumer = Thread(target = self.consumer, args = ( os.path.join(self.args.output, "machine_{}/data.csv".format(self.args.name)), args.resolution))
+        self.producer = Thread(target = self.producer, args = ( self.args.name, args.resolution))
 
     def stop(self):
-        self.consumer_lock.release()
-        if not self.args.test:
-            self.th.join()
+        if self.consumer_lock.locked():
+            self.consumer_lock.release()
+            self.consumer.join()
+            self.producer.join()
 
     def start(self):
-        self.th.start()
+        self.producer.start()
+        self.consumer.start()
         
     #push current MachineState into the queue
     def event_push(self,state):
@@ -49,6 +53,9 @@ class PiSensor:
     def day_changed(self,now):
         pass
     
+    def setup(self):
+        pass
+    
     def to_stdout(self,data):
         SaveHandlers.ConsoleHandler(self.args).save(data)
     
@@ -56,9 +63,21 @@ class PiSensor:
         SaveHandlers.FileSaveHandler(self.args).save(data)
     
     """
+    Watcher thread function
+    """
+    def producer(self,name,resolution):
+        print("producer thread started")
+        self.setup()
+        
+        while self.consumer_lock.locked():
+            sleep(resolution)
+            
+        print("producer thread quitting")
+            
+    """
     Consumer thread function
     """
-    def consumer(self,output, resolution, machname):
+    def consumer(self,output,resolution):
         print("consumer thread started")
         
         self.setup_changed(datetime.datetime.now())

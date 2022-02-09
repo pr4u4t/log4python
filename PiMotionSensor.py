@@ -4,6 +4,7 @@ import PiSensor
 from enum import Enum
 import numpy
 from numpy import array
+from signal import pause
 
 #Enumeration definition
 class MachineState(Enum):
@@ -19,7 +20,7 @@ class PiMotionSensor(PiSensor.PiSensor):
             #RBPI dev related imports only if not in test mode
             from gpiozero import MotionSensor
             self.sensor = MotionSensor(args.pin)
-            self.setup()
+       
        
     def setup_changed(self,now):
         self.priv = { 
@@ -71,14 +72,19 @@ class PiMotionSensor(PiSensor.PiSensor):
     """
     def setup(self):
         print("Initializing sensor...")
-        self.sensor.wait_for_no_motion()
-        #we have been patiently waiting until machine state is OFF
-        #record that state and timestamp
-        self.motion_push(MachineState.OFF)
-        print("Sensor initialized successfully")
-        self.sensor.when_motion = self.motion_start
-        self.sensor.when_no_motion = self.motion_end
+        if not self.args.test:
+            self.sensor.wait_for_no_motion()
+            #we have been patiently waiting until machine state is OFF
+            #record that state and timestamp
+            self.motion_push(MachineState.OFF)
+            print("Sensor initialized successfully")
+            self.sensor.when_motion = self.motion_start
+            self.sensor.when_no_motion = self.motion_end
+        else:
+            print("Running in test mode")
+            
         print("Finished setup")
+        #pause()
     
     def process_event(self,item,now):
         print("POPED: {}".format(item))
