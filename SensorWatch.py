@@ -9,6 +9,7 @@ import sys
 import os.path
 import getpass
 from ArgumentParser import parse_arguments
+from ArgumentParser import check_environment
 import LockMechanism
 import PiSensor
 import PiMotionSensor
@@ -36,22 +37,7 @@ class Application:
         return parse_arguments()
 
     def check_env(self):
-        print("Checking environment")
-        #check and create if necessary instance directory
-        if not os.path.isdir(self.args.output):
-            print("CSV storage path:",self.args.output,"does not exists or is not a directory")
-            print("Please create it using `sudo mkdir",self.args.output,"`")
-            return False
-
-        if not os.access(self.args.output, os.W_OK):
-            print("CSV storage directory:",self.args.output,"is not writeable")
-            print("Please change ownership of this directory using: `sudo chown {}:{} {}`".format(getpass.getuser(),getpass.getuser(),self.args.output))
-            print("also change permission of this directory using: `sudo chmod 750 {}`".format(self.args.output))
-            return False
-        
-        if not os.path.isdir(os.path.join(self.args.output, "machine_{}".format(self.args.name))):
-            os.mkdir(os.path.join(self.args.output, "machine_{}".format(self.args.name)))
-        return True
+        return check_environment(self.args)
     
     #Catch main thread interrupt to perform graceful exit
     def signal_handler(self,signum, frame):

@@ -15,6 +15,8 @@ class PiSensor:
         self.consumer_lock = Lock()
         self.consumer_lock.acquire()
         self.args = args
+        self.data = []
+        self.setup_changed(datetime.datetime.now())
         self.consumer = Thread(target = self.consumer, args = ( os.path.join(self.args.output, "machine_{}/data.csv".format(self.args.name)), args.resolution))
         self.producer = Thread(target = self.producer, args = ( self.args.name, args.resolution))
 
@@ -42,7 +44,11 @@ class PiSensor:
         pass
     
     def setup_changed(self,now):
-        pass
+        self.priv = { 
+            'midx'    : now.minute,
+            'hidx'    : now.hour,
+            'didx'    : now.day
+        }
     
     def minute_changed(self,now):
         pass
@@ -51,7 +57,8 @@ class PiSensor:
         pass
     
     def day_changed(self,now):
-        pass
+        self.to_file(self.data)
+        self.priv['didx'] = now.day
     
     def setup(self):
         pass
@@ -80,7 +87,7 @@ class PiSensor:
     def consumer(self,output,resolution):
         print("consumer thread started")
         
-        self.setup_changed(datetime.datetime.now())
+        #self.setup_changed(datetime.datetime.now())
         
         while self.consumer_lock.locked():
             try:
@@ -109,7 +116,19 @@ class PiSensor:
 
 if __name__ == "__main__":
     print("Basic class test")
-    from ArgumentParser import parse_arguments 
+    from ArgumentParser import parse_arguments
+    from ArgumentParser import check_environment
+    import sys
+    
     args = parse_arguments()
-    sensor = PiSensor(args)
-    sensor.start()
+    if not check_environment(args):
+        print("Failed to prepare running environment")
+        sys.exit(-1)
+    try:
+        sensor = PiSensor(args)
+        sensor.start()
+        sensor.priv['didx'] += 1
+        sleep(1)
+        sensor.stop()
+    except:
+        print("print exception caught not good")

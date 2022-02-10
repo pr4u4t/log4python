@@ -23,12 +23,7 @@ class PiMotionSensor(PiSensor.PiSensor):
        
        
     def setup_changed(self,now):
-        self.priv = { 
-            'laston'  : 0,
-            'midx'    : now.minute,
-            'hidx'    : now.hour,
-            'didx'    : now.day
-        }
+        self.priv['laston'] = 0
     
     def minute_changed(self,now):
         self.priv['midx'] = now.minute

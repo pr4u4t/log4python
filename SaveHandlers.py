@@ -9,16 +9,17 @@ class FileSaveHandler(SaveHandler):
         self.args = args
     
     def save(self,data):
-        print("Writing uptime statistics to file {}".format(self.args.output))
+        print("Writing uptime statistics to file {}/{}/data.csv".format(self.args.output,self.args.name))
         total = 0
-        with open(self.args.output,mode="w",encoding="utf-8") as fd:
+        with open("{}/{}/data.csv".format(self.args.output,self.args.name),mode="w",encoding="utf-8") as fd:
             fd.write("Machine name, {}\r\n".format(self.args.name))
             fd.write("Hour, Uptime\r\n")
-            for index in range(len(self.data)):
+            for index in range(len(data)):
                 total += data[index]
                 fd.write("{}, {:.2f}\r\n".format(index,data[index]))
             fd.write("Total, {:.2f}\r\n".format(total))
         fd.close()
+        print("Finished statistics write to file")
 
 class ConsoleHandler(SaveHandler):
     def __init__(self,args):
@@ -35,6 +36,6 @@ class ConsoleHandler(SaveHandler):
         print("Total, {:.2f}".format(total))
 
 SaveHandlers = {
-    "file"      :  lambda args : FileSaveHandler(),   
-    "console"   :  lambda args : ConsoleHandler()
+    "file"      :  lambda args : FileSaveHandler(args),   
+    "console"   :  lambda args : ConsoleHandler(args)
 }
