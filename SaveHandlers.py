@@ -12,8 +12,8 @@ class FileSaveHandler(SaveHandler):
         print("Writing uptime statistics to file {}/{}/data.csv".format(self.args.output,self.args.name))
         total = 0
         with open("{}/{}/data.csv".format(self.args.output,self.args.name),mode="w",encoding="utf-8") as fd:
-            fd.write("Machine name, {}\r\n".format(self.args.name))
-            fd.write("Hour, Uptime\r\n")
+            fd.write("Sensor, {}\r\n".format(self.args.name))
+            fd.write("Hour, Sum\r\n")
             for index in range(len(data)):
                 total += data[index]
                 fd.write("{}, {:.2f}\r\n".format(index,data[index]))
@@ -28,8 +28,8 @@ class ConsoleHandler(SaveHandler):
     def save(self,data):
         print("Writing uptime statistics to stdout")
         total = 0
-        print("Machine name, {}".format(self.args.name))
-        print("Hour, Uptime")
+        print("Sensor, {}".format(self.args.name))
+        print("Hour, Sum")
         for index in range(len(data)):
             total += data[index]
             print("{}, {:.2f}".format(index,data[index]))
@@ -39,3 +39,20 @@ SaveHandlers = {
     "file"      :  lambda args : FileSaveHandler(args),   
     "console"   :  lambda args : ConsoleHandler(args)
 }
+
+if __name__ == "__main__":
+    print("Basic class test")
+    from ArgumentParser import parse_arguments
+    from ArgumentParser import check_environment
+    import sys
+    
+    args = parse_arguments()
+    if not check_environment(args):
+        print("Failed to prepare running environment")
+        sys.exit(-1)
+    try:
+        FileSaveHandler(args).save([])
+        ConsoleHandler(args).save([])
+    except:
+        print("print exception caught not good")
+        raise
