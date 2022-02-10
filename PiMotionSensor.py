@@ -15,18 +15,16 @@ class PiMotionSensor(PiSensor.PiSensor):
     def __init__(self,args):
         super().__init__(args)
         self.data = numpy.zeros(24)
+        self.priv['laston'] = 0
         
         if not args.test:
             #RBPI dev related imports only if not in test mode
             from gpiozero import MotionSensor
             self.sensor = MotionSensor(args.pin)
-       
-       
-    def setup_changed(self,now):
-        self.priv['laston'] = 0
     
     def minute_changed(self,now):
         self.priv['midx'] = now.minute
+    
     
     def hour_changed(self,now):
         if laston != 0:
@@ -55,12 +53,12 @@ class PiMotionSensor(PiSensor.PiSensor):
     #Interrupt handler when machine changes state to `ON`
     def motion_start(self):
         ts = self.event_push(MachineState.ON)
-        print("Machine #",self.args.machname," ON",ts)
+        print("Sensor: {} ON timestamp: {}".format(self.args.name,ts))
 
     #Interrupt handler when machine changes state to `OFF`
     def motion_end(self):
         ts = self.event_push(MachineState.OFF)
-        print("Machine #",self.args.machname," OFF",ts)
+        print("Sensor: {} OFF timestamp: {}".format(self.args.name,ts))
     
     """
     Main program functions
@@ -93,3 +91,23 @@ class PiMotionSensor(PiSensor.PiSensor):
                 self.data[hidx] += ((now.timestamp() - laston)/60)
             laston = 0
 
+if __name__ == "__main__":
+    print("Basic class test")
+    from ArgumentParser import parse_arguments
+    from ArgumentParser import check_environment
+    import sys
+    from time import sleep
+    
+    args = parse_arguments()
+    if not check_environment(args):
+        print("Failed to prepare running environment")
+        sys.exit(-1)
+    try:
+        sensor = PiMotionSensor(args)
+        sensor.start()
+        sensor.priv['didx'] += 1
+        sleep(1)
+        sensor.stop()
+    except:
+        print("print exception caught not good")
+        raise

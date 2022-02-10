@@ -17,6 +17,7 @@ class PiSensor:
         self.args = args
         self.data = []
         self.setup_changed(datetime.datetime.now())
+        #TODO: clean
         self.consumer = Thread(target = self.consumer, args = ( os.path.join(self.args.output, "machine_{}/data.csv".format(self.args.name)), args.resolution))
         self.producer = Thread(target = self.producer, args = ( self.args.name, args.resolution))
 
@@ -132,3 +133,4 @@ if __name__ == "__main__":
         sensor.stop()
     except:
         print("print exception caught not good")
+        raise
