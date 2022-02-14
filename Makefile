@@ -1,5 +1,10 @@
 OBJ := src/LockMechanism.py src/PiMotionSensor.py src/PiSensor.py src/SaveHandlers.py
 
+install:
+	cp contrib/SensorWatch.service /etc/systemd/system 
+	@[ -d /var/log/SensorWatch ] || mkdir /var/log/SensorWatch
+	@[ -d /etc/SensorWatch ] || mkdir /etc/SensorWatch
+
 clean:
 	rm -rf ./__pycache__/*
 
