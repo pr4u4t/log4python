@@ -1,4 +1,4 @@
-OBJ := LockMechanism.py PiMotionSensor.py PiSensor.py SaveHandlers.py
+OBJ := src/LockMechanism.py src/PiMotionSensor.py src/PiSensor.py src/SaveHandlers.py
 
 test:
 	@for source in $(OBJ) ; do \
