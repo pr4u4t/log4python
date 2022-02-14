@@ -1,5 +1,7 @@
 SUBDIRS := doc src
 
+all: 
+	$(MAKE) -C src/
 docs:
 	@[ -d ./doc ] || mkdir ./doc
 	doxygen
@@ -9,7 +11,7 @@ install:
 	@[ -d /var/log/SensorWatch ] || mkdir /var/log/SensorWatch
 	@[ -d /etc/SensorWatch ] || mkdir /etc/SensorWatch
 	$(MAKE) -C src/
-	$(MAKE) -C doc/
+	#$(MAKE) -C doc/
 
 clean:
 	$(MAKE) -C src/ clean
@@ -20,4 +22,4 @@ dist-clean: clean
 	
 
 test:
-	$(MAKE) -C src/
+	$(MAKE) -C src/ test
