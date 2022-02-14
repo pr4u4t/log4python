@@ -27,8 +27,8 @@ class PiMotionSensor(PiSensor.PiSensor):
     
     
     def hour_changed(self,now):
-        if laston != 0:
-            self.data[hidx] += ((now.timestamp() - laston)/60)
+        if self.priv['laston'] != 0:
+            self.data['hidx'] += ((now.timestamp() - self.priv['laston'])/60)
             self.priv['laston'] = now.timestamp()
         #switch index to next hour
         self.priv['hidx'] = now.hour
@@ -83,12 +83,12 @@ class PiMotionSensor(PiSensor.PiSensor):
         print("POPED: {}".format(item))
         if item[0] == MachineState.ON:
             print("machine state changed to ON")
-            laston = item[1]
+            self.priv['laston'] = item[1]
         else:
             print("machine state changed to OFF")
-            if laston != 0:
+            if self.priv['laston'] != 0:
                 print("making calculation")
-                self.data[hidx] += ((now.timestamp() - laston)/60)
+                self.priv['hidx'] += ((now.timestamp() - self.priv['laston'])/60)
             laston = 0
 
 if __name__ == "__main__":
