@@ -11,7 +11,7 @@ clean:
 test:
 	@for source in $(OBJ) ; do \
 		echo "Executing test for: $$source"; \
-		./$$source --test ; \
+		./$$source --test &> /dev/null ; \
 		if [ $$? -ne 0 ]; then \
 			echo "TEST: failed!!" ; \
 			false ; \
