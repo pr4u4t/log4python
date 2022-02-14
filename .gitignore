@@ -13,3 +13,4 @@ pip-delete-this-directory.txt
 *.out
 *.toc
 *.o
+src/*.c
