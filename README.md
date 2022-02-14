@@ -18,3 +18,11 @@ Arguments:
 --sensor SENSOR           sensor type (TODO)
 --config CONFIG           configuration file location (TODO)
 ```
+
+```
+Example:
+./src/SensorWatch.py --pin 18 --name machine_1 --save file --resolution 0.25
+
+./src/SensorWatch.py --pin 14 --name machine_2 --save file --resolution 0.25
+
+```
