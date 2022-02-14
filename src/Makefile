@@ -16,6 +16,9 @@ SensorWatch.c: SensorWatch.py
 %.o: %.c
 	gcc $(CFLAGS) -c $< -o $@ 
 
+install:
+	cp -f SensorWatch /usr/bin/
+
 test:
 	@for source in $(PSOURCES) ; do \
 		echo "Executing test for: $$source"; \
