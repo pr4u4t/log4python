@@ -10,8 +10,8 @@ install:
 	cp contrib/SensorWatch.service /etc/systemd/system 
 	@[ -d /var/log/SensorWatch ] || mkdir /var/log/SensorWatch
 	@[ -d /etc/SensorWatch ] || mkdir /etc/SensorWatch
-	$(MAKE) -C src/
-	#$(MAKE) -C doc/
+	$(MAKE) -C src/ install
+	#$(MAKE) -C doc/ install
 
 clean:
 	$(MAKE) -C src/ clean
