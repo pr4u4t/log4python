@@ -1,10 +1,20 @@
 #!/usr/bin/env python3
 
+"""@package docstring
+Documentation for this module.
+ 
+More details.
+"""
+
 import argparse
 import configparser
 import os.path
     
 def parse_arguments():
+    """Documentation for a function.
+    
+    More details.
+    """
 	print("Parsing command line arguments")
 	parser = argparse.ArgumentParser(description='Program that watches changes on Motion Sensor on a given RBPI PIN')
 	parser.add_argument('--pin', default = 18, help = "number of PIN to which sensor is connected")
@@ -20,20 +30,22 @@ def parse_arguments():
 	return parser.parse_args()
 
 def check_environment(args):
+    if args.test:
         print("Checking environment")
-        #check and create if necessary instance directory
-        if not os.path.isdir(args.output):
-            print("CSV storage path:",args.output,"does not exists or is not a directory")
-            print("Please create it using `sudo mkdir",args.output,"`")
-            return False
+    
+    #check and create if necessary instance directory
+    if not os.path.isdir(args.output):
+        print("CSV storage path:",args.output,"does not exists or is not a directory")
+        print("Please create it using `sudo mkdir",args.output,"`")
+        return False
 
-        if not os.access(args.output, os.W_OK):
-            print("CSV storage directory:",args.output,"is not writeable")
-            print("Please change ownership of this directory using: `sudo chown {}:{} {}`".format(getpass.getuser(),getpass.getuser(),args.output))
-            print("also change permission of this directory using: `sudo chmod 750 {}`".format(args.output))
-            return False
+    if not os.access(args.output, os.W_OK):
+        print("CSV storage directory:",args.output,"is not writeable")
+        print("Please change ownership of this directory using: `sudo chown {}:{} {}`".format(getpass.getuser(),getpass.getuser(),args.output))
+        print("also change permission of this directory using: `sudo chmod 750 {}`".format(args.output))
+        return False
         
-        if not os.path.isdir(os.path.join(args.output, args.name)):
-            os.mkdir(os.path.join(args.output, args.name))
+    if not os.path.isdir(os.path.join(args.output, args.name)):
+        os.mkdir(os.path.join(args.output, args.name))
             
-        return True
+    return True

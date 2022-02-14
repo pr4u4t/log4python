@@ -1,0 +1,47 @@
+.TH "SaveHandlers" 3 "Mon Feb 14 2022" "log4python" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+SaveHandlers
+.SH SYNOPSIS
+.br
+.PP
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "class \fBConsoleHandler\fP"
+.br
+.ti -1c
+.RI "class \fBFileSaveHandler\fP"
+.br
+.ti -1c
+.RI "class \fBSaveHandler\fP"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "dictionary \fBSaveHandlers\fP"
+.br
+.ti -1c
+.RI "\fBargs\fP = parse_arguments()"
+.br
+.in -1c
+.SH "Variable Documentation"
+.PP 
+.SS "SaveHandlers\&.args = parse_arguments()"
+
+.SS "dictionary SaveHandlers\&.SaveHandlers"
+\fBInitial value:\fP
+.PP
+.nf
+1 =  {
+2     "file"      :  lambda args : FileSaveHandler(args),   
+3     "console"   :  lambda args : ConsoleHandler(args)
+4 }
+.fi
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for log4python from the source code\&.

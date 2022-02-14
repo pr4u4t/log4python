@@ -1,5 +1,9 @@
 OBJ := src/LockMechanism.py src/PiMotionSensor.py src/PiSensor.py src/SaveHandlers.py
 
+docs:
+	@[ -d ./doc ] || mkdir ./doc
+	doxygen
+
 install:
 	cp contrib/SensorWatch.service /etc/systemd/system 
 	@[ -d /var/log/SensorWatch ] || mkdir /var/log/SensorWatch

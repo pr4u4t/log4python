@@ -1,0 +1,228 @@
+\hypertarget{class_pi_sensor_1_1_pi_sensor}{}\doxysection{Pi\+Sensor.\+Pi\+Sensor Class Reference}
+\label{class_pi_sensor_1_1_pi_sensor}\index{PiSensor.PiSensor@{PiSensor.PiSensor}}
+Inheritance diagram for Pi\+Sensor.\+Pi\+Sensor\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_pi_sensor_1_1_pi_sensor}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_a121061839378597977737006e8e3e0dc}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, \mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_a6ec1eb53ea9b6f0e5007002af12b97a0}{args}})
+\item 
+def \mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_a3a461f8538991cd7cb3e722ad54e744a}{stop}} (self)
+\item 
+def \mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_a37b0737dc2f90b97e36c02cc51a8ca08}{start}} (self)
+\item 
+def \mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_a2f3802edf416922e7a1fb1be1a6ba477}{event\+\_\+push}} (self, state)
+\item 
+def \mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_adf8b22fa256629a2dd9f4fd6ba267929}{event\+\_\+pop}} (self, resolution=0.\+25)
+\item 
+def \mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_a76b78081cdf9edfd1838ae4d604ec4d9}{process\+\_\+event}} (self, item, now)
+\item 
+def \mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_a6192ffe36c99f14f08ea5237dff0363b}{setup\+\_\+changed}} (self, now)
+\item 
+def \mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_a9426236aabdb5a2845c3c6faa6db39de}{minute\+\_\+changed}} (self, now)
+\item 
+def \mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_a3ef14420f23a6abbd9992d708ba24012}{hour\+\_\+changed}} (self, now)
+\item 
+def \mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_a6d0f8441b7014d562e6c1204cc3c2270}{day\+\_\+changed}} (self, now)
+\item 
+def \mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_a5ddf825102928e3f205b2d662661a67a}{setup}} (self)
+\item 
+def \mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_a848df1007979cbb1861b80172d937cef}{to\+\_\+stdout}} (self, \mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_aba7a81496657a657aa77f0d35d87f7b6}{data}})
+\item 
+def \mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_a34360e162fb356a8a53962c279f590b4}{to\+\_\+file}} (self, \mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_aba7a81496657a657aa77f0d35d87f7b6}{data}})
+\item 
+def \mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_a4458ef27fc19318a4b8ea2232dd84143}{producer}} (self, name, resolution)
+\item 
+def \mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_aa36efbf16e703bca8a8fd9d99c49f204}{consumer}} (self, output, resolution)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_ac14e601e30c957470303d1de7ad9ce8f}{time\+\_\+queue}}
+\item 
+\mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_aec505a1b964bee154b954f1972402c75}{consumer\+\_\+lock}}
+\item 
+\mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_a6ec1eb53ea9b6f0e5007002af12b97a0}{args}}
+\item 
+\mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_aba7a81496657a657aa77f0d35d87f7b6}{data}}
+\item 
+\mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_afc041d1e8fb3194589c38686ec793b4a}{consumer}}
+\item 
+\mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_aad8788d750d870337126e67ea981113f}{producer}}
+\item 
+\mbox{\hyperlink{class_pi_sensor_1_1_pi_sensor_aa70a10312f792a313e9bf200a7b9f7c8}{priv}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_a121061839378597977737006e8e3e0dc}\label{class_pi_sensor_1_1_pi_sensor_a121061839378597977737006e8e3e0dc}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def Pi\+Sensor.\+Pi\+Sensor.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{args }\end{DoxyParamCaption})}
+
+
+
+Reimplemented in \mbox{\hyperlink{class_pi_motion_sensor_1_1_pi_motion_sensor_aceca9efd1107d21e81e08bb10334f9bf}{Pi\+Motion\+Sensor.\+Pi\+Motion\+Sensor}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_aa36efbf16e703bca8a8fd9d99c49f204}\label{class_pi_sensor_1_1_pi_sensor_aa36efbf16e703bca8a8fd9d99c49f204}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!consumer@{consumer}}
+\index{consumer@{consumer}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{consumer()}{consumer()}}
+{\footnotesize\ttfamily def Pi\+Sensor.\+Pi\+Sensor.\+consumer (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{output,  }\item[{}]{resolution }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_a6d0f8441b7014d562e6c1204cc3c2270}\label{class_pi_sensor_1_1_pi_sensor_a6d0f8441b7014d562e6c1204cc3c2270}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!day\_changed@{day\_changed}}
+\index{day\_changed@{day\_changed}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{day\_changed()}{day\_changed()}}
+{\footnotesize\ttfamily def Pi\+Sensor.\+Pi\+Sensor.\+day\+\_\+changed (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{now }\end{DoxyParamCaption})}
+
+
+
+Reimplemented in \mbox{\hyperlink{class_pi_motion_sensor_1_1_pi_motion_sensor_ae757570f27820286171b39187161755f}{Pi\+Motion\+Sensor.\+Pi\+Motion\+Sensor}}.
+
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_adf8b22fa256629a2dd9f4fd6ba267929}\label{class_pi_sensor_1_1_pi_sensor_adf8b22fa256629a2dd9f4fd6ba267929}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!event\_pop@{event\_pop}}
+\index{event\_pop@{event\_pop}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{event\_pop()}{event\_pop()}}
+{\footnotesize\ttfamily def Pi\+Sensor.\+Pi\+Sensor.\+event\+\_\+pop (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{resolution = {\ttfamily 0.25} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_a2f3802edf416922e7a1fb1be1a6ba477}\label{class_pi_sensor_1_1_pi_sensor_a2f3802edf416922e7a1fb1be1a6ba477}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!event\_push@{event\_push}}
+\index{event\_push@{event\_push}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{event\_push()}{event\_push()}}
+{\footnotesize\ttfamily def Pi\+Sensor.\+Pi\+Sensor.\+event\+\_\+push (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{state }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_a3ef14420f23a6abbd9992d708ba24012}\label{class_pi_sensor_1_1_pi_sensor_a3ef14420f23a6abbd9992d708ba24012}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!hour\_changed@{hour\_changed}}
+\index{hour\_changed@{hour\_changed}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{hour\_changed()}{hour\_changed()}}
+{\footnotesize\ttfamily def Pi\+Sensor.\+Pi\+Sensor.\+hour\+\_\+changed (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{now }\end{DoxyParamCaption})}
+
+
+
+Reimplemented in \mbox{\hyperlink{class_pi_motion_sensor_1_1_pi_motion_sensor_a1b4d1908bdcc8812ed5111d0e954a19c}{Pi\+Motion\+Sensor.\+Pi\+Motion\+Sensor}}.
+
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_a9426236aabdb5a2845c3c6faa6db39de}\label{class_pi_sensor_1_1_pi_sensor_a9426236aabdb5a2845c3c6faa6db39de}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!minute\_changed@{minute\_changed}}
+\index{minute\_changed@{minute\_changed}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{minute\_changed()}{minute\_changed()}}
+{\footnotesize\ttfamily def Pi\+Sensor.\+Pi\+Sensor.\+minute\+\_\+changed (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{now }\end{DoxyParamCaption})}
+
+
+
+Reimplemented in \mbox{\hyperlink{class_pi_motion_sensor_1_1_pi_motion_sensor_af6b48e67deb3abebabbd739db999287f}{Pi\+Motion\+Sensor.\+Pi\+Motion\+Sensor}}.
+
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_a76b78081cdf9edfd1838ae4d604ec4d9}\label{class_pi_sensor_1_1_pi_sensor_a76b78081cdf9edfd1838ae4d604ec4d9}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!process\_event@{process\_event}}
+\index{process\_event@{process\_event}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{process\_event()}{process\_event()}}
+{\footnotesize\ttfamily def Pi\+Sensor.\+Pi\+Sensor.\+process\+\_\+event (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{item,  }\item[{}]{now }\end{DoxyParamCaption})}
+
+
+
+Reimplemented in \mbox{\hyperlink{class_pi_motion_sensor_1_1_pi_motion_sensor_a6f57f4f6a7fe31412ff122864179144d}{Pi\+Motion\+Sensor.\+Pi\+Motion\+Sensor}}.
+
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_a4458ef27fc19318a4b8ea2232dd84143}\label{class_pi_sensor_1_1_pi_sensor_a4458ef27fc19318a4b8ea2232dd84143}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!producer@{producer}}
+\index{producer@{producer}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{producer()}{producer()}}
+{\footnotesize\ttfamily def Pi\+Sensor.\+Pi\+Sensor.\+producer (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{name,  }\item[{}]{resolution }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_a5ddf825102928e3f205b2d662661a67a}\label{class_pi_sensor_1_1_pi_sensor_a5ddf825102928e3f205b2d662661a67a}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!setup@{setup}}
+\index{setup@{setup}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily def Pi\+Sensor.\+Pi\+Sensor.\+setup (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Reimplemented in \mbox{\hyperlink{class_pi_motion_sensor_1_1_pi_motion_sensor_a63757485a41b4923dd2b88291aaf5757}{Pi\+Motion\+Sensor.\+Pi\+Motion\+Sensor}}.
+
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_a6192ffe36c99f14f08ea5237dff0363b}\label{class_pi_sensor_1_1_pi_sensor_a6192ffe36c99f14f08ea5237dff0363b}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!setup\_changed@{setup\_changed}}
+\index{setup\_changed@{setup\_changed}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{setup\_changed()}{setup\_changed()}}
+{\footnotesize\ttfamily def Pi\+Sensor.\+Pi\+Sensor.\+setup\+\_\+changed (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{now }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_a37b0737dc2f90b97e36c02cc51a8ca08}\label{class_pi_sensor_1_1_pi_sensor_a37b0737dc2f90b97e36c02cc51a8ca08}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!start@{start}}
+\index{start@{start}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{start()}{start()}}
+{\footnotesize\ttfamily def Pi\+Sensor.\+Pi\+Sensor.\+start (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_a3a461f8538991cd7cb3e722ad54e744a}\label{class_pi_sensor_1_1_pi_sensor_a3a461f8538991cd7cb3e722ad54e744a}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!stop@{stop}}
+\index{stop@{stop}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{stop()}{stop()}}
+{\footnotesize\ttfamily def Pi\+Sensor.\+Pi\+Sensor.\+stop (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_a34360e162fb356a8a53962c279f590b4}\label{class_pi_sensor_1_1_pi_sensor_a34360e162fb356a8a53962c279f590b4}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!to\_file@{to\_file}}
+\index{to\_file@{to\_file}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{to\_file()}{to\_file()}}
+{\footnotesize\ttfamily def Pi\+Sensor.\+Pi\+Sensor.\+to\+\_\+file (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{data }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_a848df1007979cbb1861b80172d937cef}\label{class_pi_sensor_1_1_pi_sensor_a848df1007979cbb1861b80172d937cef}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!to\_stdout@{to\_stdout}}
+\index{to\_stdout@{to\_stdout}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{to\_stdout()}{to\_stdout()}}
+{\footnotesize\ttfamily def Pi\+Sensor.\+Pi\+Sensor.\+to\+\_\+stdout (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{data }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_a6ec1eb53ea9b6f0e5007002af12b97a0}\label{class_pi_sensor_1_1_pi_sensor_a6ec1eb53ea9b6f0e5007002af12b97a0}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!args@{args}}
+\index{args@{args}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{args}{args}}
+{\footnotesize\ttfamily Pi\+Sensor.\+Pi\+Sensor.\+args}
+
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_afc041d1e8fb3194589c38686ec793b4a}\label{class_pi_sensor_1_1_pi_sensor_afc041d1e8fb3194589c38686ec793b4a}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!consumer@{consumer}}
+\index{consumer@{consumer}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{consumer}{consumer}}
+{\footnotesize\ttfamily Pi\+Sensor.\+Pi\+Sensor.\+consumer}
+
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_aec505a1b964bee154b954f1972402c75}\label{class_pi_sensor_1_1_pi_sensor_aec505a1b964bee154b954f1972402c75}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!consumer\_lock@{consumer\_lock}}
+\index{consumer\_lock@{consumer\_lock}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{consumer\_lock}{consumer\_lock}}
+{\footnotesize\ttfamily Pi\+Sensor.\+Pi\+Sensor.\+consumer\+\_\+lock}
+
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_aba7a81496657a657aa77f0d35d87f7b6}\label{class_pi_sensor_1_1_pi_sensor_aba7a81496657a657aa77f0d35d87f7b6}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!data@{data}}
+\index{data@{data}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily Pi\+Sensor.\+Pi\+Sensor.\+data}
+
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_aa70a10312f792a313e9bf200a7b9f7c8}\label{class_pi_sensor_1_1_pi_sensor_aa70a10312f792a313e9bf200a7b9f7c8}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!priv@{priv}}
+\index{priv@{priv}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{priv}{priv}}
+{\footnotesize\ttfamily Pi\+Sensor.\+Pi\+Sensor.\+priv}
+
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_aad8788d750d870337126e67ea981113f}\label{class_pi_sensor_1_1_pi_sensor_aad8788d750d870337126e67ea981113f}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!producer@{producer}}
+\index{producer@{producer}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{producer}{producer}}
+{\footnotesize\ttfamily Pi\+Sensor.\+Pi\+Sensor.\+producer}
+
+\mbox{\Hypertarget{class_pi_sensor_1_1_pi_sensor_ac14e601e30c957470303d1de7ad9ce8f}\label{class_pi_sensor_1_1_pi_sensor_ac14e601e30c957470303d1de7ad9ce8f}} 
+\index{PiSensor.PiSensor@{PiSensor.PiSensor}!time\_queue@{time\_queue}}
+\index{time\_queue@{time\_queue}!PiSensor.PiSensor@{PiSensor.PiSensor}}
+\doxysubsubsection{\texorpdfstring{time\_queue}{time\_queue}}
+{\footnotesize\ttfamily Pi\+Sensor.\+Pi\+Sensor.\+time\+\_\+queue}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{_pi_sensor_8py}{Pi\+Sensor.\+py}}\end{DoxyCompactItemize}

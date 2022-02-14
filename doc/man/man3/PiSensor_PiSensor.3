@@ -1,0 +1,150 @@
+.TH "PiSensor.PiSensor" 3 "Mon Feb 14 2022" "log4python" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+PiSensor.PiSensor
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Inherited by \fBPiMotionSensor\&.PiMotionSensor\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "def \fB__init__\fP (self, \fBargs\fP)"
+.br
+.ti -1c
+.RI "def \fBstop\fP (self)"
+.br
+.ti -1c
+.RI "def \fBstart\fP (self)"
+.br
+.ti -1c
+.RI "def \fBevent_push\fP (self, state)"
+.br
+.ti -1c
+.RI "def \fBevent_pop\fP (self, resolution=0\&.25)"
+.br
+.ti -1c
+.RI "def \fBprocess_event\fP (self, item, now)"
+.br
+.ti -1c
+.RI "def \fBsetup_changed\fP (self, now)"
+.br
+.ti -1c
+.RI "def \fBminute_changed\fP (self, now)"
+.br
+.ti -1c
+.RI "def \fBhour_changed\fP (self, now)"
+.br
+.ti -1c
+.RI "def \fBday_changed\fP (self, now)"
+.br
+.ti -1c
+.RI "def \fBsetup\fP (self)"
+.br
+.ti -1c
+.RI "def \fBto_stdout\fP (self, \fBdata\fP)"
+.br
+.ti -1c
+.RI "def \fBto_file\fP (self, \fBdata\fP)"
+.br
+.ti -1c
+.RI "def \fBproducer\fP (self, name, resolution)"
+.br
+.ti -1c
+.RI "def \fBconsumer\fP (self, output, resolution)"
+.br
+.in -1c
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "\fBtime_queue\fP"
+.br
+.ti -1c
+.RI "\fBconsumer_lock\fP"
+.br
+.ti -1c
+.RI "\fBargs\fP"
+.br
+.ti -1c
+.RI "\fBdata\fP"
+.br
+.ti -1c
+.RI "\fBconsumer\fP"
+.br
+.ti -1c
+.RI "\fBproducer\fP"
+.br
+.ti -1c
+.RI "\fBpriv\fP"
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "def PiSensor\&.PiSensor\&.__init__ ( self,  args)"
+
+.PP
+Reimplemented in \fBPiMotionSensor\&.PiMotionSensor\fP\&.
+.SH "Member Function Documentation"
+.PP 
+.SS "def PiSensor\&.PiSensor\&.consumer ( self,  output,  resolution)"
+
+.SS "def PiSensor\&.PiSensor\&.day_changed ( self,  now)"
+
+.PP
+Reimplemented in \fBPiMotionSensor\&.PiMotionSensor\fP\&.
+.SS "def PiSensor\&.PiSensor\&.event_pop ( self,  resolution = \fC0\&.25\fP)"
+
+.SS "def PiSensor\&.PiSensor\&.event_push ( self,  state)"
+
+.SS "def PiSensor\&.PiSensor\&.hour_changed ( self,  now)"
+
+.PP
+Reimplemented in \fBPiMotionSensor\&.PiMotionSensor\fP\&.
+.SS "def PiSensor\&.PiSensor\&.minute_changed ( self,  now)"
+
+.PP
+Reimplemented in \fBPiMotionSensor\&.PiMotionSensor\fP\&.
+.SS "def PiSensor\&.PiSensor\&.process_event ( self,  item,  now)"
+
+.PP
+Reimplemented in \fBPiMotionSensor\&.PiMotionSensor\fP\&.
+.SS "def PiSensor\&.PiSensor\&.producer ( self,  name,  resolution)"
+
+.SS "def PiSensor\&.PiSensor\&.setup ( self)"
+
+.PP
+Reimplemented in \fBPiMotionSensor\&.PiMotionSensor\fP\&.
+.SS "def PiSensor\&.PiSensor\&.setup_changed ( self,  now)"
+
+.SS "def PiSensor\&.PiSensor\&.start ( self)"
+
+.SS "def PiSensor\&.PiSensor\&.stop ( self)"
+
+.SS "def PiSensor\&.PiSensor\&.to_file ( self,  data)"
+
+.SS "def PiSensor\&.PiSensor\&.to_stdout ( self,  data)"
+
+.SH "Member Data Documentation"
+.PP 
+.SS "PiSensor\&.PiSensor\&.args"
+
+.SS "PiSensor\&.PiSensor\&.consumer"
+
+.SS "PiSensor\&.PiSensor\&.consumer_lock"
+
+.SS "PiSensor\&.PiSensor\&.data"
+
+.SS "PiSensor\&.PiSensor\&.priv"
+
+.SS "PiSensor\&.PiSensor\&.producer"
+
+.SS "PiSensor\&.PiSensor\&.time_queue"
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for log4python from the source code\&.
