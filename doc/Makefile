@@ -6,3 +6,6 @@ clean:
 
 dist-clean: clean
 	$(MAKE) -C latex/ dist-clean
+
+install:
+	mkdir -p /usr/share/SensorWatch
